@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="/Users/flatironschool/dev/assignments/SQL_databases/sql-library-lab-houston-web-100818/sql-library-lab.db" foreign_keys="1"/><window><current_tab id="3"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="840"/><expanded_item id="0" parent="1"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><current_table name="characters"/><default_encoding codec=""/><browsetable_info data="AAAACgAAABIAcwB1AGIAZwBlAG4AcgBlAHMAAAAAAAAAAAAAAAAAAAAAAAAAAAD//////////wAAAAD/////AAAAEABzAHQAdQBkAGUAbgB0AHMAAAAAAAAAAAAAAAAAAAAAAAAAAAD//////////wAAAAD/////AAAADABzAGUAcgBpAGUAcwAAAAAAAAAAAAAAAAAAAAAAAAAAAP//////////AAAAAP////8AAAAMAGgAZQByAG8AZQBzAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////wAAABoAaABlAHIAbwBfAGEAYgBpAGwAaQB0AGUAcwAAAAAAAAAAAAAAAAAAAAAAAAAAAP//////////AAAAAP////8AAAAUAGMAaABhAHIAYQBjAHQAZQByAHMAAAAAAAAAAAAAAAAAAAAAAAAAAAD//////////wAAAAD/////AAAACgBiAG8AbwBrAHMAAAAAAAAAAAAAAAAAAAAAAAAAAAD//////////wAAAAD/////AAAACgBiAGUAYQByAHMAAAAEAAAAAQAAAAAAAAAAAAAAAAD//////////wAAAAD/////AAAADgBhAHUAdABoAG8AcgBzAAAAAAAAAAAAAAAAAAAAAAAAAAAA//////////8AAAAA/////wAAABIAYQBiAGkAbABpAHQAaQBlAHMAAAAAAAAAAAAAAAAAAAAAAAAAAAD//////////wAAAAD/////"/></tab_browse><tab_sql><sql name="schema.sql">CREATE TABLE series (
+    id INTEGER PRIMARY KEY,
+    title TEXT,
+    author_ID TEXT,
+    subgenre_ID TEXT
+);
+
+CREATE TABLE subgenres (
+    id INTEGER PRIMARY KEY,
+    name TEXT    
+);
+
+CREATE TABLE authors (
+    id INTEGER PRIMARY KEY,
+    name TEXT
+);
+
+CREATE TABLE books (
+    id INTEGER PRIMARY KEY,
+    title TEXT,
+    year INTEGER,
+    series_ID INTEGER
+);
+CREATE TABLE characters (
+    id INTEGER PRIMARY KEY,
+    name TEXT,
+    motto TEXT,
+    species TEXT,
+    author_ID INTEGER,
+    series_ID INTEGER
+);
+
+CREATE TABLE character_books (
+    id INTEGER PRIMARY KEY,
+    character_ID INTEGER,
+    book_ID INTEGER
+);</sql><sql name="insert.sql">INSERT INTO series (id, title, author_ID, subgenre_ID) VALUES 
+-- (1, 'The Kingkiller Chronicle', 1, 1), 
+(2, 'The Dresden Files', 2, 2), 
+(3, 'The Lord of the Rings', 3, 1);
+
+INSERT INTO subgenres (id, name) VALUES 
+(1, 'epic fantasy'),
+(2, 'urban fantasy');
+
+INSERT INTO authors (id, name) VALUES 
+-- (1, 'Patrick Rothfuss'),
+(2, 'Jim Butcher'),
+(3, 'J.R.R. Tolkien');
+
+INSERT INTO books (id, title, year, series_ID) VALUES
+-- (1, 'The Name of the Wind', 2007, 1),
+-- (2, &quot;The Wise Man's Fear&quot;, 2011, 1),
+-- (3, 'The Slow Regard of Silent Things', 2014, 1),
+-- (4, 'Storm Front', 2000, 2),
+-- (5, 'Fool Moon', 2001, 2),
+(6, 'Grave Peril', 2001, 2),
+(7, 'Summer Knight', 2002, 2),
+(8, 'Death Masks', 2003, 2),
+(9, 'The Fellowship of the Ring', 1954, 3),
+(10, 'The Two Towers', 1954, 3),
+(11, 'The Return of the King', 1955, 3);
+
+INSERT INTO characters (id, name, motto, species, author_ID, series_ID) VALUES
+-- (1, 'Kvothe', 'You may have heard of me.', 'human', 1, 1),
+-- (2, 'Auri', 'Wisdom preclues boldness.', 'human', 1, 1),
+-- (3, 'Felurian', 'A wise man views a moonless night with fear', 'fae', 1, 1),
+-- (4, 'Cinder', &quot;Someone's parents have been singing entirely the wrong sort of songs&quot;, 'Chandrian', 1, 1),
+
+(5, 'Harry Dresden', 'FUEGO!', 'human', 2, 2),
+(6, 'Waldo Butters', 'Polka will never die!', 'human', 2, 2),
+(7, 'Karen Murphy', &quot;You're the best kind of crazy&quot;, 'human', 2, 2),
+(8, 'Queen Mab', 'I keep my bargains.', 'fae', 2, 2),
+
+(9, 'Frodo Baggins', 'I wish the ring had never come to me', 'hobbit', 3, 3),
+(10, 'Samwise Gamgee', &quot;I'm coming with you.&quot;, 'hobbit', 3, 3),
+(11, 'Boromir', &quot;One does not simply walk into Mordor.&quot;, 'human', 3, 3),
+(12, 'Elrond', &quot;Welcome to Rivendell.&quot;, 'elf', 3, 3);
+
+INSERT INTO character_books (character_ID, book_ID) VALUES
+-- (1,1),
+-- (1,3),
+-- (1,2),
+-- (2,1),
+-- (2,2),
+-- (2,3),
+-- (3,2),
+-- (4,1),
+-- (4,2),
+-- (5,4),
+-- (5,5),
+(5,6),
+(5,7),
+(5,8),
+(6,8),
+-- (7,4),
+-- (7,5),
+(7,6),
+(7,7),
+(7,8),
+(8,7),
+(9,9),
+(9,10),
+(9,11),
+(10,9),
+(10,10),
+(10,11),
+(11,9),
+(12,9);</sql><sql name="SQL 4">--select_books_titles_and_years_in_first_series_order_by_year
+
+SELECT books.title, books.year FROM books
+INNER JOIN series ON books.series_ID = series.id
+ORDER BY books.year LIMIT 3</sql><sql name="SQL 5">--select_name_and_motto_of_char_with_longest_motto
+
+SELECT name, motto FROM characters
+ORDER BY LENGTH(motto) DESC LIMIT 1;</sql><sql name="SQL 6">--select_value_and_count_of_most_prolific_species
+
+SELECT species, COUNT(species) FROM characters
+GROUP BY species
+ORDER BY COUNT(species) DESC LIMIT 1;</sql><sql name="SQL 7">--select_name_and_series_subgenres_of_authors
+
+SELECT authors.name, subgenres.name FROM authors
+INNER JOIN series ON authors.id = series.author_ID
+INNER JOIN subgenres ON series.subgenre_ID = subgenres.id;</sql><sql name="SQL 8">--select_series_title_with_most_human_characters
+
+SELECT series.title FROM series
+JOIN characters ON series.id = characters.series_ID
+WHERE characters.species = 'human'
+GROUP BY series.title
+ORDER BY count(series.title) DESC LIMIT 1</sql><sql name="SQL 9">--select_character_names_and_number_of_books_they_are_in
+
+SELECT characters.name, COUNT(character_books.book_ID) FROM characters
+JOIN character_books ON characters.id = character_books.character_ID
+GROUP BY characters.name
+ORDER BY COUNT(character_books.book_ID) DESC</sql><current_tab id="7"/></tab_sql></sqlb_project>
